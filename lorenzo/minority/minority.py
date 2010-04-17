@@ -1,80 +1,65 @@
 #! /usr/bin/python
 
-def minority(T):
-    if len(T) <=  1:
+import sys
+
+def minority(T, length):
+    if length <= 1:
         return T
-    mid = len(T) / 2
-    left = T[:mid]
-    right = T[mid:]
-    left = minority(left)
-    right = minority(right)
+    mid = length / 2
+    left = minority(T[:mid], mid)
+    right = minority(T[mid:], length - mid)
     
     if left == []:
         return right
     elif right == []:
         return left
-    elif left[-1] >= right[0]:
-        result = eliminate(left, right)
+    if left[-1] >= right[0]:
+        return eliminate(left, right)
     else:
-        result = left.extend(right)
-
-    return result
-        
-def eliminate(left, right):
-    len_left = len(left)
-    len_right = len(right)
-    while len_left > 0 and len_right > 0: 
-        left = left[1:]
-        right = right[1:]
-        len_left -= 1
-        len_right -= 1
-
-    if len_left == 0:
-        return right
-    else:
+        left.extend(right)
         return left
 
 
+def eliminate(left, right):
+    r_len = len(right)
+    l_len = len(left)
+    result = []
 
-
-
-
-
-
-
-
-# def majority(T):
-#     length = len(T)
-#     low = length / 2
-#     if length != 1:
-#         m_element = majority(T[:low])
-#     else:
-#         return (T[0],1)
-
-#     count = 0
-#     for x in T[low:]: #parte derecha de la lista
-#         if x != m_element[0]:
-#             continue
-#         else:
-#             count += 1
-#             break
-
-#     if count == 0:
-#         return (m_element[0], m_element[1])
+    while r_len > 0 and l_len > 0:
+        if left[0] == right[0]:
+            left = left[1:]
+            right = right[1:]
+            l_len -= 1
+            r_len -= 1
+        elif left[0] < right[0]:
+            result.append(left[0])
+            left = left[1:]
+            l_len -= 1
+        else:
+            result.append(right[0])
+            right = right[1:]
+            r_len -= 1
         
-#     # Se busca el elemento en la derecha
-#     m_element = majority(T[low:]) 
-#     count = 0
+    if l_len == 0:
+        result.extend(right)
+        return result
+    else:
+        result.extend(left)
+        return result
 
-#     for x in T[:low]: #parte izquierda de la lista
-#         if x != m_element[0]:
-#             continue
-#         else:
-#             count += 1
-#             break
 
-#     if count == 0:
-#         return (m_element[0], m_element[1])
-#     else:
-#         return (0,0)
-    
+f = file(sys.argv[1], 'r')
+cases = int(f.readline())
+
+for times in range(cases):
+    length = f.readline() # reading number of elements 
+    str_list = f.readline() # reading list as string 
+    str_list = str_list.split(' ')
+    for i in range(len(str_list)):
+        str_list[i] = str_list[i].strip('\n')
+    T = []
+    for i in str_list:
+        T.append(int(i))
+    answer = minority(T, int(length))
+    print 'Case #' + str(times + 1) + ': ' +  str(answer[0])
+
