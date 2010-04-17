@@ -1,0 +1,6 @@
+semantic.cache
+*.pyc
+#*
+*.in
+*.out
+
