@@ -67,7 +67,20 @@ tailPower n (BN l pr) (BN l2 pr2) =
 -}
 threeSquareFive::Int->BigNumber
 threeSquareFive n  = 
-     power n (BN [5,2,3,6,0,6,7,9,8] 1) 
+     power n (BN [5,2,3,6,0,6,7,9,8] 8) 
 
+nAfterColon::Int->BigNumber->[Int]
+nAfterColon n (BN l pr)=
+    nextN n (drop pr (reverse l)) []
 
+nextN::Int->[Int]->[Int]->[Int]
+nextN 0 _ nDigits = nDigits
+nextN n (x:xs) nDigits =
+    nextN (n-1) xs (x:nDigits)
+nextN n [] nDigits =
+    nextN (n-1) [] (0:nDigits)
+
+numbers::Int->Int->[Int]
+numbers nAfter nPower =
+    nAfterColon nAfter (threeSquareFive nPower)
 
