@@ -33,14 +33,21 @@ for c in range(1,num_cases+1):
     count = 0
     ci=0
     cj=0
-    for i in points:        
+    
+    lp = len(points)
+    while(ci<lp):#while's used to avoid list cutting        
         cj=ci+1
-        for j in points[ci:]:#Avoid previous tuples
-            for k in points[cj:]:                
-                if (((i[0]+j[0]+k[0])%3 ==0) and ((i[1]+j[1]+k[1])%3 ==0)):
-                        t = [i,j,k]                        
-                        triangles.append(t)
+        while(cj<lp):
+            ck=cj+1
+            while(ck<lp):
+                pi=points[ci]
+                pj=points[cj]
+                pk=points[ck]                
+                if ((pi[0]+pj[0]+pk[0])%3 ==0):
+                    if ((pi[1]+pj[1]+pk[1])%3 ==0):
+                        t = [pi,pj,pk]                        
                         count+=1
+                ck+=1
             cj+=1
         ci+=1
     
