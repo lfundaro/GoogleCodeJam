@@ -4,7 +4,7 @@ type Index = Integer
 type II    = (Integer,Index)
 
 index :: [Integer] -> [II]
-index x =  zip x [0..]
+index x =  zip x [1..]
 
 norep :: (II,II) -> Bool
 norep ((a,c),(b,d)) = not (a == b && c == d)
@@ -41,9 +41,9 @@ solve :: ([Integer],Integer) -> (Integer,Integer)
 solve (art,cr) = let (i1,i2,_,_) = credit cr (combine.index $ art)
                  in 
                    if i1 <= i2 then
-                       (i1+1,i2+1)
+                       (i1,i2)
                    else
-                       (i2+1,i1+1)
+                       (i2,i1)
 
 main :: IO () 
 main = do 
